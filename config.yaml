@@ -1,0 +1,17 @@
+cookie:
+  expiry_days: 30
+  key: random_signature_key
+  name: email_sender_cookie
+credentials:
+  usernames:
+    admin:
+      email: admin@example.com
+      name: Administrator
+      password: $2b$12$rCpUOQGUjNnzLPxCk3zcIeSZzI.WTnxcaVyJWBZZB1JOTGKlP5yrO  # admin123
+    placement_team:
+      email: team@example.com
+      name: Placement Team
+      password: $2b$12$tgGHjYjZ1KRsrv0OFhEbwOgJ39Tx27tJAJZioSQUCCwJMXbV2.lIO  # user456
+pre-authorized:
+  emails:
+  - newuser@example.com
