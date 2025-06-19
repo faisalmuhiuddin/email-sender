@@ -49,9 +49,9 @@ def send_emails(contacts_df, poc_data, template_type):
                 
                 # Create message
                 msg = MIMEMultipart()
-                msg["From"] = "IDDD Placement Strategks" #email_sender
+                msg["From"] = "IIT Madras Placement Team (IDDD)" #email_sender
                 msg["To"] = contact["email"]
-                msg["Subject"] = f"Invitation to {contact['company']} for IDDD recruitment"
+                msg["Subject"] = f"Invitation to {contact['company']} for Campus Recruitment 2025-26 | IIT Madras"
                 
                 # Render HTML email body
                 html_content = render_email_template(template_type, email_data)
