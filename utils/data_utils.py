@@ -1,9 +1,15 @@
 import pandas as pd
 import streamlit as st
+from pathlib import Path
 
 def load_poc_data(file_path):
     """Load and validate POC data from Excel file"""
     try:
+        file_path = Path(file_path)
+        if not file_path.exists():
+            st.error(f"POC data file not found: {file_path}")
+            return pd.DataFrame(columns=["POC_name", "POC_designation", "POC_contact"])
+            
         df = pd.read_excel(file_path)
         
         # Validate required columns
@@ -11,7 +17,8 @@ def load_poc_data(file_path):
         missing_columns = [col for col in required_columns if col not in df.columns]
         
         if missing_columns:
-            raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
+            st.error(f"Missing required columns in POC data: {', '.join(missing_columns)}")
+            return pd.DataFrame(columns=required_columns)
             
         return df
         
@@ -31,10 +38,13 @@ def validate_contacts_file(file):
         if missing_columns:
             raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
         
-        # Validate email format
-        invalid_emails = df[~df["email"].str.contains("@")]["email"].tolist()
+        # Remove rows with empty email addresses
+        df = df.dropna(subset=["email"])
+        
+        # Validate email format (basic validation)
+        invalid_emails = df[~df["email"].astype(str).str.contains("@", na=False)]["email"].tolist()
         if invalid_emails:
-            raise ValueError(f"Invalid email format for: {', '.join(invalid_emails[:5])}" + 
+            raise ValueError(f"Invalid email format for: {', '.join(str(email) for email in invalid_emails[:5])}" + 
                             (f"... and {len(invalid_emails) - 5} more" if len(invalid_emails) > 5 else ""))
         
         return df

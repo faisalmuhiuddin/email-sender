@@ -7,11 +7,11 @@ credentials:
     admin:
       email: admin@example.com
       name: Administrator
-      password: $2b$12$eokQe5vblailcpT9QDqrwONhaaepvb8/Qh.2Rsk0yn4Ani/mhhZpi  # admin123
+      password: $2b$12$rCpUOQGUjNnzLPxCk3zcIeSZzI.WTnxcaVyJWBZZB1JOTGKlP5yrO  # admin123
     placement_team:
       email: team@example.com
       name: Placement Team
-      password: $2b$12$uXEHvJQyxiHzTdGmNGHszuzd4W8/VwC/OLhjcHXo.yFC5vp9Ev8qK  # user456
+      password: $2b$12$tgGHjYjZ1KRsrv0OFhEbwOgJ39Tx27tJAJZioSQUCCwJMXbV2.lIO  # user456
 pre-authorized:
   emails:
   - newuser@example.com

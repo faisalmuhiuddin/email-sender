@@ -37,12 +37,18 @@ def initialize_session_state():
     if "email_results" not in st.session_state:
         st.session_state["email_results"] = {"success": [], "failed": []}
 
-# Login page
+# Login page - FIXED VERSION for streamlit_authenticator 0.4.2
 def show_login_page(authenticator):
     st.subheader("Login")
     
     try:
-        name, authentication_status, username = authenticator.login('Login', 'main')
+        # FIXED: Call login method and handle None return value
+        authenticator.login(location='main', key='Login')
+        
+        # FIXED: Access authentication status from session state instead of return value
+        authentication_status = st.session_state.get("authentication_status", None)
+        name = st.session_state.get("name", None)
+        username = st.session_state.get("username", None)
         
         if authentication_status == False:
             st.error("Invalid username or password")
@@ -51,8 +57,9 @@ def show_login_page(authenticator):
             
     except Exception as e:
         st.error(f"Authentication Error: {e}")
+        authentication_status = None
         
-    return authentication_status
+    return st.session_state.get("authentication_status", None)
 
 # Main application page
 def show_main_page():
@@ -60,6 +67,10 @@ def show_main_page():
     
     # 1. POC Selection
     poc_data = load_poc_data("data/poc_details.xlsx")
+    if poc_data.empty:
+        st.error("Could not load POC data. Please check the data/poc_details.xlsx file.")
+        return
+        
     poc_names = poc_data["POC_name"].tolist()
     
     selected_poc_name = st.selectbox(
@@ -159,15 +170,19 @@ def main():
     initialize_session_state()
     
     # Load and initialize authentication
-    authenticator = initialize_authentication()
+    try:
+        authenticator = initialize_authentication()
+    except Exception as e:
+        st.error(f"Failed to initialize authentication: {e}")
+        st.error("Please check your config.yaml file and ensure all required files are present.")
+        return
     
     # Handle authentication status
-    if st.session_state["authentication_status"] is not True:
-        authentication_status = show_login_page(authenticator)
-        st.session_state["authentication_status"] = authentication_status
+    if st.session_state.get("authentication_status") is not True:
+        show_login_page(authenticator)
     else:
-        # Show logout button
-        authenticator.logout('Logout', 'main')
+        # FIXED: Show logout button with proper session state handling
+        authenticator.logout(button_name='Logout', location='main')
         
         # Display main application
         show_main_page()
