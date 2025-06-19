@@ -2,6 +2,8 @@ import streamlit as st
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.header import Header
+from email.utils import formataddr
 import time
 from utils.template_utils import render_email_template
 import random
@@ -49,7 +51,7 @@ def send_emails(contacts_df, poc_data, template_type):
                 
                 # Create message
                 msg = MIMEMultipart()
-                msg["From"] = "IIT Madras Placement Team (IDDD)" #email_sender
+                msg["From"] = formataddr((str(Header("IIT Madras Placement Team (IDDD)", 'utf-8')), email_sender)) #email_sender
                 msg["To"] = contact["email"]
                 msg["Subject"] = f"Invitation to {contact['company']} for Campus Recruitment 2025-26 | IIT Madras"
                 
