@@ -14,14 +14,14 @@ from utils.template_utils import render_email_template
 
 # Page configuration
 st.set_page_config(
-    page_title="Secure Email Sender",
+    page_title="IDDD Email Tool",
     page_icon="📧",
     layout="wide"
 )
 
 # Application title and description
 def show_header():
-    st.title("📧 Secure Email Sender")
+    st.title("📧 IDDD Email Automation Workflow")
     st.markdown("Send personalized emails using templates and contact lists")
 
 # Initialize session state variables
@@ -101,7 +101,7 @@ def show_main_page():
     # 3. Upload Contacts
     st.subheader("Upload Contact List")
     contacts_file = st.file_uploader(
-        "Upload Excel file with contacts (must contain email, name, company columns)",
+        "Upload Excel file with contacts (must contain the columns: email, name, company)",
         type=["xlsx", "xls"]
     )
     
